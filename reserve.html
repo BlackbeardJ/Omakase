@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reservations - Hashirama</title>
+        <link rel="stylesheet" href="style.css"> <link rel="preconnect"
+            href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+
+        <header class="main-header">
+            <div class="container header-content">
+                <div class="logo">
+                    <a href="index.html"><img src="images/logo.png"
+                            alt="Hashirama Logo"></a>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about-us-section">About
+                                Us</a></li>
+                        <li><a
+                                href="index.html#menu-highlights-section">Menu</a></li>
+                        <li><a href="reservations.html">Reservations</a></li>
+                        <li><a
+                                href="index.html#contact-section">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-icons">
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+            </div>
+        </header>
+
+        <section class="page-hero reservation-hero">
+            <div class="container">
+                <h1>Book Your Table</h1>
+                <p>Experience the finest Japanese cuisine by reserving your spot
+                    at Hashirama.</p>
+            </div>
+        </section>
+
+        <section class="reservation-form-section">
+            <div class="container">
+                <h2 class="section-title">予約する<span>Make a
+                        Reservation</span></h2>
+                <p class="section-description">Please fill out the form below to
+                    secure your table.</p>
+
+                <form id="reservationForm" class="reservation-form">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Time:</label>
+                        <div id="time-slots-container" class="time-slots-grid">
+                            <p id="loading-slots-message">Loading available
+                                slots...</p>
+                            <p id="no-slots-message"
+                                style="display: none; color: #f05454;">No
+                                available slots for this date.</p>
+                        </div>
+                        <input type="hidden" id="selectedTime"
+                            name="selectedTime">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guests">Number of Guests:</label>
+                        <select id="guests" name="guests" required>
+                            <option value>Select</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                            <option value="5">5 People</option>
+                            <option value="6">6+ People (Please specify in
+                                notes)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Your Name:</label>
+                        <input type="text" id="name" name="name" required
+                            placeholder="Full Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" id="email" name="email" required
+                            placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone"
+                            placeholder="+XX XXX XXX XXXX">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Special Requests/Notes:</label>
+                        <textarea id="notes" name="notes" rows="4"
+                            placeholder="Any dietary restrictions, special occasions, etc."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn primary-btn"
+                        id="submitReservationBtn">Confirm Reservation</button>
+                    <div id="form-message" class="form-message"
+                        style="display: none;"></div>
+                </form>
+            </div>
+        </section>
+
+        <footer id="contact-section" class="main-footer">
+            <div class="container footer-content">
+                <div class="footer-col about-footer">
+                    <div class="logo">
+                        <a href="index.html"><img src="images/logo-footer.png"
+                                alt="Hashirama Logo"></a>
+                    </div>
+                    <p>Experience authentic Japanese cuisine crafted with
+                        passion and precision.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col quick-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#about-us-section">About
+                                Us</a></li>
+                        <li><a href="index.html#menu-highlights-section">Our
+                                Menu</a></li>
+                        <li><a href="reservations.html">Reservations</a></li>
+                        <li><a href="#">Catering</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-info">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Sushi Lane,
+                        Tokyo, Japan</p>
+                    <p><i class="fas fa-phone"></i> +81 123 456 7890</p>
+                    <p><i class="fas fa-envelope"></i> info@hashirama.com</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sun: 11AM - 10PM</p>
+                </div>
+                <div class="footer-col newsletter">
+                    <h4>Newsletter</h4>
+                    <p>Stay up to date with our latest news and offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <p>&copy; 2025 Hashirama. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('date');
+            const timeSlotsContainer = document.getElementById('time-slots-container');
+            const selectedTimeInput = document.getElementById('selectedTime');
+            const reservationForm = document.getElementById('reservationForm');
+            const submitReservationBtn = document.getElementById('submitReservationBtn');
+            const loadingSlotsMessage = document.getElementById('loading-slots-message');
+            const noSlotsMessage = document.getElementById('no-slots-message');
+            const formMessage = document.getElementById('form-message');
+
+            let selectedTime = null; // Stores the actual time string (e.g., "18:30")
+
+            // --- Smooth scrolling for internal links (copied from previous discussion) ---
+            const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+            const header = document.querySelector('.main-header');
+
+            smoothScrollLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Only prevent default if it's an internal hash link on the CURRENT page
+                    // This allows links like 'index.html#about-us-section' to work as normal
+                    if (this.pathname === window.location.pathname) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+
+                        if (targetElement) {
+                            const headerHeight = header ? header.offsetHeight : 0;
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                            history.pushState(null, null, targetId);
+                        }
+                    }
+                });
+            });
+
+
+            // --- Reservation Form Specific Logic ---
+
+            // Function to fetch and display available slots (MOCK DATA for now)
+            async function fetchAndDisplayTimeSlots(date) {
+                timeSlotsContainer.innerHTML = ''; // Clear previous slots
+                selectedTime = null;
+                selectedTimeInput.value = ''; // Clear hidden input
+                submitReservationBtn.disabled = true; // Disable until a slot is selected
+                loadingSlotsMessage.style.display = 'block';
+                noSlotsMessage.style.display = 'none';
+                formMessage.style.display = 'none';
+
+                if (!date) {
+                    loadingSlotsMessage.textContent = 'Please select a date.';
+                    return;
+                }
+
+                try {
+                    // --- MOCK API CALL for frontend demonstration ---
+                    // In a real application, this would be an actual fetch to your backend:
+                    // const response = await fetch(`/api/available-slots?date=${date}`);
+                    // const availableSlots = await response.json();
+
+                    // Simulating network delay and backend response
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate loading time
+
+                    let availableSlots = [];
+                    // Example: Some dates might have no slots, others have specific ones
+                    if (date === new Date().toISOString().split('T')[0]) { // Today
+                        availableSlots = ["18:00", "18:30", "19:00", "19:30"]; // Fewer slots for today
+                    } else if (date === '2025-07-06') { // Tomorrow (example date)
+                        availableSlots = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"];
+                    } else if (date === '2025-07-07') { // Another example date with limited slots
+                         availableSlots = ["19:00", "19:30", "20:00"];
+                    } else if (date === '2025-07-08') { // Example date with no slots
+                        availableSlots = [];
+                    } else {
+                        // Default slots for other dates
+                        availableSlots = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"];
+                    }
+                    // --- END MOCK DATA ---
+
+
+                    loadingSlotsMessage.style.display = 'none';
+
+                    if (availableSlots.length === 0) {
+                        noSlotsMessage.style.display = 'block';
+                        return;
+                    }
+
+                    availableSlots.forEach(slotTime => {
+                        const button = document.createElement('button');
+                        button.type = 'button'; // Prevent form submission
+                        button.classList.add('time-slot');
+                        button.setAttribute('data-time', slotTime);
+                        button.textContent = formatTimeForDisplay(slotTime);
+                        timeSlotsContainer.appendChild(button);
+                    });
+
+                } catch (error) {
+                    console.error('Error fetching time slots:', error);
+                    loadingSlotsMessage.textContent = 'Error loading time slots. Please try again.';
+                    loadingSlotsMessage.style.color = '#f05454';
+                }
+            }
+
+            // Helper to format time (e.g., "18:00" to "06:00 PM")
+            function formatTimeForDisplay(time24hr) {
+                const [hour, minute] = time24hr.split(':').map(Number);
+                const dateObj = new Date();
+                dateObj.setHours(hour, minute);
+                return dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            }
+
+            // Initialize date input with today's date and fetch slots
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+            dateInput.min = today; // Prevent selecting past dates
+            fetchAndDisplayTimeSlots(today);
+
+            // Event listener for date change
+            dateInput.addEventListener('change', (event) => {
+                const selectedDateValue = event.target.value;
+                fetchAndDisplayTimeSlots(selectedDateValue);
+            });
+
+            // Event listener for time slot selection
+            timeSlotsContainer.addEventListener('click', (event) => {
+                const clickedButton = event.target.closest('.time-slot');
+                if (clickedButton) {
+                    // Remove 'selected' from all other slots
+                    document.querySelectorAll('.time-slot').forEach(btn => btn.classList.remove('selected'));
+
+                    // Add 'selected' to the clicked slot
+                    clickedButton.classList.add('selected');
+                    selectedTime = clickedButton.getAttribute('data-time');
+                    selectedTimeInput.value = selectedTime; // Update hidden input
+                    submitReservationBtn.disabled = false; // Enable submit button
+                }
+            });
+
+            // Event listener for form submission
+            reservationForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                if (!selectedTime) {
+                    displayFormMessage('Please select a time slot.', 'error');
+                    return;
+                }
+
+                // Gather form data
+                const formData = {
+                    date: dateInput.value,
+                    time: selectedTime, // Use the actual selected time
+                    guests: document.getElementById('guests').value,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    notes: document.getElementById('notes').value,
+                };
+
+                submitReservationBtn.disabled = true;
+                submitReservationBtn.textContent = 'Processing...';
+                formMessage.style.display = 'none'; // Hide previous messages
+
+                try {
+                    // *** THIS IS THE API CALL TO YOUR BACKEND ***
+                    // Replace with your actual backend endpoint
+                    const response = await fetch('/api/make-reservation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'X-CSRF-Token': 'your-csrf-token' // If you have CSRF protection
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        displayFormMessage('Your reservation has been successfully placed! A confirmation email will be sent shortly.', 'success');
+                        reservationForm.reset(); // Clear the form
+                        selectedTime = null; // Reset selected time
+                        selectedTimeInput.value = '';
+                        fetchAndDisplayTimeSlots(dateInput.value); // Re-fetch slots to update availability
+                    } else {
+                        // Backend error (e.g., slot no longer available, validation error)
+                        displayFormMessage(`Reservation failed: ${result.message || 'An unknown error occurred.'}`, 'error');
+                        // If slot was taken, re-fetch slots
+                        if (result.code === 'SLOT_TAKEN') { // Example error code
+                            fetchAndDisplayTimeSlots(dateInput.value);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Network error during reservation:', error);
+                    displayFormMessage('A network error occurred. Please check your internet connection.', 'error');
+                } finally {
+                    submitReservationBtn.disabled = false;
+                    submitReservationBtn.textContent = 'Confirm Reservation';
+                }
+            });
+
+            function displayFormMessage(message, type) {
+                formMessage.textContent = message;
+                formMessage.className = `form-message ${type}`; // Adds 'success' or 'error' class
+                formMessage.style.display = 'block';
+                // Scroll to message for visibility
+                formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hashirama - Discover the Flavor of Japan</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Omakase Reservation</title>
+        <link rel="stylesheet" href="style.css"> <link rel="preconnect"
+            href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="script" href="script.js">
+
+    </head>
+    <body>
+        <script src="script.js"></script>
+        <!-- ############################### -->
+        <!-- <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Get all anchor links that start with # (internal links)
+                const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+                const header = document.querySelector('.main-header'); // Get your fixed header element
+    
+                smoothScrollLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault(); // Prevent the default jump behavior
+    
+                        const targetId = this.getAttribute('href'); // Get the href value (e.g., "#about-us-section")
+                        const targetElement = document.querySelector(targetId); // Get the actual element
+    // new addededdedededededededede
+                    if (this.pathname === window.location.pathname) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            const headerHeight = header ? header.offsetHeight : 0; // Get header height, or 0 if no header
+                            // Calculate the position to scroll to
+                            // We subtract headerHeight to make sure the section appears below the fixed header
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+    
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth' // This tells the browser to animate the scroll
+                            });
+    
+                            // Optional: Update URL hash without jumping (for bookmarks/back button)
+                            history.pushState(null, null, targetId);
+                        }
+                    }
+                    });
+                });
+            
+
+
+            // --- Reservation Form Specific Logic ---
+
+            // Function to fetch and display available slots (MOCK DATA for now)
+            async function fetchAndDisplayTimeSlots(date) {
+                timeSlotsContainer.innerHTML = ''; // Clear previous slots
+                selectedTime = null;
+                selectedTimeInput.value = ''; // Clear hidden input
+                submitReservationBtn.disabled = true; // Disable until a slot is selected
+                loadingSlotsMessage.style.display = 'block';
+                noSlotsMessage.style.display = 'none';
+                formMessage.style.display = 'none';
+
+                if (!date) {
+                    loadingSlotsMessage.textContent = 'Please select a date.';
+                    return;
+                }
+
+                try {
+                    // --- MOCK API CALL for frontend demonstration ---
+                    // In a real application, this would be an actual fetch to your backend:
+                    // const response = await fetch(`/api/available-slots?date=${date}`);
+                    // const availableSlots = await response.json();
+
+                    // Simulating network delay and backend response
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate loading time
+
+                    let availableSlots = [];
+                    // Example: Some dates might have no slots, others have specific ones
+                    if (date === new Date().toISOString().split('T')[0]) { // Today
+                        availableSlots = ["18:00", "18:30", "19:00", "19:30"]; // Fewer slots for today
+                    } else if (date === '2025-07-06') { // Tomorrow (example date)
+                        availableSlots = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"];
+                    } else if (date === '2025-07-07') { // Another example date with limited slots
+                         availableSlots = ["19:00", "19:30", "20:00"];
+                    } else if (date === '2025-07-08') { // Example date with no slots
+                        availableSlots = [];
+                    } else {
+                        // Default slots for other dates
+                        availableSlots = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"];
+                    }
+                    // --- END MOCK DATA ---
+
+
+                    loadingSlotsMessage.style.display = 'none';
+
+                    if (availableSlots.length === 0) {
+                        noSlotsMessage.style.display = 'block';
+                        return;
+                    }
+
+                    availableSlots.forEach(slotTime => {
+                        const button = document.createElement('button');
+                        button.type = 'button'; // Prevent form submission
+                        button.classList.add('time-slot');
+                        button.setAttribute('data-time', slotTime);
+                        button.textContent = formatTimeForDisplay(slotTime);
+                        timeSlotsContainer.appendChild(button);
+                    });
+
+                } catch (error) {
+                    console.error('Error fetching time slots:', error);
+                    loadingSlotsMessage.textContent = 'Error loading time slots. Please try again.';
+                    loadingSlotsMessage.style.color = '#f05454';
+                }
+            }
+            // Helper to format time (e.g., "18:00" to "06:00 PM")
+            function formatTimeForDisplay(time24hr) {
+                const [hour, minute] = time24hr.split(':').map(Number);
+                const dateObj = new Date();
+                dateObj.setHours(hour, minute);
+                return dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            }
+
+             // Initialize date input with today's date and fetch slots
+             const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+            dateInput.min = today; // Prevent selecting past dates
+            fetchAndDisplayTimeSlots(today);
+
+            // Event listener for date change
+            dateInput.addEventListener('change', (event) => {
+                const selectedDateValue = event.target.value;
+                fetchAndDisplayTimeSlots(selectedDateValue);
+            });
+
+            // Event listener for time slot selection
+            timeSlotsContainer.addEventListener('click', (event) => {
+                const clickedButton = event.target.closest('.time-slot');
+                if (clickedButton) {
+                    // Remove 'selected' from all other slots
+                    document.querySelectorAll('.time-slot').forEach(btn => btn.classList.remove('selected'));
+
+                    // Add 'selected' to the clicked slot
+                    clickedButton.classList.add('selected');
+                    selectedTime = clickedButton.getAttribute('data-time');
+                    selectedTimeInput.value = selectedTime; // Update hidden input
+                    submitReservationBtn.disabled = false; // Enable submit button
+                }
+            });
+
+            // Event listener for form submission
+            reservationForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                if (!selectedTime) {
+                    displayFormMessage('Please select a time slot.', 'error');
+                    return;
+                }
+
+                // Gather form data
+                const formData = {
+                    date: dateInput.value,
+                    time: selectedTime, // Use the actual selected time
+                    guests: document.getElementById('guests').value,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    notes: document.getElementById('notes').value,
+                };
+
+                submitReservationBtn.disabled = true;
+                submitReservationBtn.textContent = 'Processing...';
+                formMessage.style.display = 'none'; // Hide previous messages
+
+                try {
+                    // *** THIS IS THE API CALL TO YOUR BACKEND ***
+                    // Replace with your actual backend endpoint
+                    const response = await fetch('/api/make-reservation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'X-CSRF-Token': 'your-csrf-token' // If you have CSRF protection
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        displayFormMessage('Your reservation has been successfully placed! A confirmation email will be sent shortly.', 'success');
+                        reservationForm.reset(); // Clear the form
+                        selectedTime = null; // Reset selected time
+                        selectedTimeInput.value = '';
+                        fetchAndDisplayTimeSlots(dateInput.value); // Re-fetch slots to update availability
+                    } else {
+                        // Backend error (e.g., slot no longer available, validation error)
+                        displayFormMessage(`Reservation failed: ${result.message || 'An unknown error occurred.'}`, 'error');
+                        // If slot was taken, re-fetch slots
+                        if (result.code === 'SLOT_TAKEN') { // Example error code
+                            fetchAndDisplayTimeSlots(dateInput.value);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Network error during reservation:', error);
+                    displayFormMessage('A network error occurred. Please check your internet connection.', 'error');
+                } finally {
+                    submitReservationBtn.disabled = false;
+                    submitReservationBtn.textContent = 'Confirm Reservation';
+                }
+            });
+
+            function displayFormMessage(message, type) {
+                formMessage.textContent = message;
+                formMessage.className = `form-message ${type}`; // Adds 'success' or 'error' class
+                formMessage.style.display = 'block';
+                // Scroll to message for visibility
+                formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+        </script> -->
+        <!-- ############################### -->
+        <!-- <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const dateInput = document.getElementById('date');
+                const timeSlotsContainer = document.getElementById('time-slots-container');
+                const selectedTimeInput = document.getElementById('selectedTime');
+                const reservationForm = document.getElementById('reservationForm');
+                const submitReservationBtn = document.getElementById('submitReservationBtn');
+                const loadingSlotsMessage = document.getElementById('loading-slots-message');
+                const noSlotsMessage = document.getElementById('no-slots-message');
+                const formMessage = document.getElementById('form-message');
+    
+                let selectedTime = null; // Stores the actual time string (e.g., "18:30")
+    
+                // --- Smooth scrolling for internal links (copied from previous discussion) ---
+                const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+                const header = document.querySelector('.main-header');
+    
+                smoothScrollLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        // Only prevent default if it's an internal hash link on the CURRENT page
+                        // This allows links like 'index.html#about-us-section' to work as normal
+                        if (this.pathname === window.location.pathname) {
+                            e.preventDefault();
+                            const targetId = this.getAttribute('href');
+                            const targetElement = document.querySelector(targetId);
+    
+                            if (targetElement) {
+                                const headerHeight = header ? header.offsetHeight : 0;
+                                const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                                history.pushState(null, null, targetId);
+                            }
+                        }
+                    });
+                });
+    
+
+
+
+
+
+                // Event listener for date change
+                dateInput.addEventListener('change', (event) => {
+                    const selectedDateValue = event.target.value;
+                    fetchAndDisplayTimeSlots(selectedDateValue);
+                });
+    
+                // Event listener for time slot selection
+                timeSlotsContainer.addEventListener('click', (event) => {
+                    const clickedButton = event.target.closest('.time-slot');
+                    if (clickedButton) {
+                        // Remove 'selected' from all other slots
+                        document.querySelectorAll('.time-slot').forEach(btn => btn.classList.remove('selected'));
+    
+                        // Add 'selected' to the clicked slot
+                        clickedButton.classList.add('selected');
+                        selectedTime = clickedButton.getAttribute('data-time');
+                        selectedTimeInput.value = selectedTime; // Update hidden input
+                        submitReservationBtn.disabled = false; // Enable submit button
+                    }
+                });
+    
+                // Event listener for form submission
+                reservationForm.addEventListener('submit', async (event) => {
+                    event.preventDefault(); // Prevent default form submission
+    
+                    if (!selectedTime) {
+                        displayFormMessage('Please select a time slot.', 'error');
+                        return;
+                    }
+    
+                    // Gather form data
+                    const formData = {
+                        date: dateInput.value,
+                        time: selectedTime, // Use the actual selected time
+                        guests: document.getElementById('guests').value,
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        notes: document.getElementById('notes').value,
+                    };
+    
+                    submitReservationBtn.disabled = true;
+                    submitReservationBtn.textContent = 'Processing...';
+                    formMessage.style.display = 'none'; // Hide previous messages
+    
+                    try {
+                        // *** THIS IS THE API CALL TO YOUR BACKEND ***
+                        // Replace with your actual backend endpoint
+                        const response = await fetch('/api/make-reservation', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                // 'X-CSRF-Token': 'your-csrf-token' // If you have CSRF protection
+                            },
+                            body: JSON.stringify(formData),
+                        });
+    
+                        const result = await response.json();
+    
+                        if (response.ok) {
+                            displayFormMessage('Your reservation has been successfully placed! A confirmation email will be sent shortly.', 'success');
+                            reservationForm.reset(); // Clear the form
+                            selectedTime = null; // Reset selected time
+                            selectedTimeInput.value = '';
+                            fetchAndDisplayTimeSlots(dateInput.value); // Re-fetch slots to update availability
+                        } else {
+                            // Backend error (e.g., slot no longer available, validation error)
+                            displayFormMessage(`Reservation failed: ${result.message || 'An unknown error occurred.'}`, 'error');
+                            // If slot was taken, re-fetch slots
+                            if (result.code === 'SLOT_TAKEN') { // Example error code
+                                fetchAndDisplayTimeSlots(dateInput.value);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Network error during reservation:', error);
+                        displayFormMessage('A network error occurred. Please check your internet connection.', 'error');
+                    } finally {
+                        submitReservationBtn.disabled = false;
+                        submitReservationBtn.textContent = 'Confirm Reservation';
+                    }
+                });
+    
+                function displayFormMessage(message, type) {
+                    formMessage.textContent = message;
+                    formMessage.className = `form-message ${type}`; // Adds 'success' or 'error' class
+                    formMessage.style.display = 'block';
+                    // Scroll to message for visibility
+                    formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        </script> -->
+        <header class="main-header">
+            <div class="container header-content">
+                <div class="logo">
+                    <a href="index.html"><img
+                            src="./assets/ChatGPT Image May 19, 2025, 10_18_27 PM.png"></a>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#reserve-table">Reservations</a></li>
+                        <!-- <li><a href="#home-section">Home</a></li> -->
+                        <li><a href="#about-us-section">About Us</a></li>
+                        <li><a href="#menu-section">Menu</a></li>
+                        <li><a href="#contact-section">Contact</a></li>
+                    </ul>
+                </nav>
+                <!-- <div class="header-icons">
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                </div> -->
+            </div>
+        </header>
+
+        <section id="home-section" class="hero-section">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <p class="tagline">Traditional Taste</p>
+                    <h1>A TASTE OF JAPAN IN YOUR<br>HOME</h1>
+                    <p class="description">Experience authentic Japanese cuisine
+                        crafted with passion and precision.</p>
+                    <a href="#reserve-table"
+                        class="btn primary-btn">RESERVATION</a>
+                </div>
+                <div class="hero-image">
+                    <img
+                        src="./assets/Red Sushi Recipe Pinterest Graphic (1).png"
+                        alt="Hand holding sushi with chopsticks"
+                        class="sushi-hand-img">
+                    <div class="red-circle"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- <section id="reserve-table" class="page-hero reservation-hero">
+            <div class="container">
+                <h1>Book Your Table</h1>
+                <p>Experience the finest Japanese cuisine by reserving your spot
+                    at Hashirama.</p>
+            </div>
+        </section> -->
+        <section id="reserve-table" class="reservation-form-section">
+            <div class="container">
+                <h2 class="section-title">予約する<span>Make a
+                        Reservation</span></h2>
+                <p class="section-description">Please fill out the form below to
+                    secure your table.</p>
+
+                <form action="https://api.web3forms.com/submit" method="POST"
+                    id="reservationForm" class="reservation-form">
+                    <input type="hidden" name="access_key"
+                        value="076082e1-1eaa-4d63-933f-36ea3b387ccd">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date"
+                            required>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="time">Time:</label>
+                        <div id="time-slots-container" class="time-slots-grid">
+                            <p id="loading-slots-message">Loading available
+                                slots...</p>
+                            <p id="no-slots-message"
+                                style="display: none; color: #f05454;">No
+                                available slots for this date.</p>
+                        </div>
+                        <input type="hidden" id="selectedTime"
+                            name="selectedTime">
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="guests">Number of Guests:</label>
+                        <select id="guests" name="guests" required>
+                            <option value>Select</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                            <option value="5">5 People</option>
+                            <option value="6">6+ People (Please specify in
+                                notes)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Your Name:</label>
+                        <input type="text" id="name" name="name" required
+                            placeholder="Full Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" id="email" name="email" required
+                            placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone"
+                            placeholder="+3620xxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Address">Address:</label>
+                        <!-- <input type="tel" id="phone" name="phone"
+                            placeholder="+3620xxxxxxx"> -->
+                        <textarea name="address" id="address"
+                            placeholder="Your address"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Special Requests/Notes:</label>
+                        <textarea id="notes" name="notes" rows="4"
+                            placeholder="Any dietary restrictions, special occasions, etc."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn primary-btn"
+                        id="submitReservationBtn">Confirm Reservation</button>
+                    <div id="form-message" class="form-message"
+                        style="display: none;"></div>
+                </form>
+            </div>
+        </section>
+
+        <!-- <section class="testimonials-section">
+            <div class="container testimonials-content">
+                <h2 class="section-title">お客様の声<span>Testimonials</span></h2>
+                <div class="testimonials-grid"> -->
+        <!-- <div class="testimonial-card">
+                        <img src="images/avatar-1.jpg" alt="Customer Avatar">
+                        <p class="rating">⭐⭐⭐⭐⭐</p>
+                        <p>"Absolutely incredible sushi! Fresh, flavorful, and beautifully presented. A must-visit for any sushi lover."</p>
+                        <h4>- Jane Doe</h4>
+                    </div>
+                    <div class="testimonial-card">
+                        <img src="images/avatar-2.jpg" alt="Customer Avatar">
+                        <p class="rating">⭐⭐⭐⭐⭐</p>
+                        <p>"The ambiance is fantastic, and the service is impeccable. Every dish was a culinary delight."</p>
+                        <h4>- John Smith</h4>
+                    </div>
+                    <div class="testimonial-card">
+                        <img src="images/avatar-3.jpg" alt="Customer Avatar">
+                        <p class="rating">⭐⭐⭐⭐⭐</p>
+                        <p>"Hands down the best Japanese food I've had outside of Japan. Highly recommend the chef's special."</p>
+                        <h4>- Emily White</h4>
+                    </div> -->
+        <!-- </div>
+            </div>
+        </section> -->
+
+        <section id="about-us-section" class="about-us-section">
+            <div class="container about-content">
+                <h2 class="section-title">知る私たち<span>About Us</span></h2>
+                <div class="about-grid">
+                    <div class="about-image">
+                        <img src="./assets/DSC08881-1.jpg"
+                            alt="Chef's hands preparing sushi">
+                    </div>
+                    <div class="about-text">
+                        <h3>Every Bite At Hashirama Is A Journey To The
+                            Authentic Flavors Of Japan.</h3>
+                        <p>We are a home-service omakase company based in
+                            BUDAPEST. Our mission is to bring the intimate,
+                            refinedexperience of Japanese omakase dining into
+                            your private space. Led by Chef [Name], who trained
+                            under
+                            masters in Japan, each course is carefully crafted
+                            using seasonal, premium ingredients.
+                        </p>
+                        <p>Whether it’s a romantic evening, a family
+                            celebration, or a private dinner with friends, we
+                            tailor every experience with elegance and care.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu-section" class="menu-highlights-section">
+            <div class="container menu-highlights-content">
+                <h2 class="section-title">おまかせ体験<span>Omakase
+                        Experience</span></h2>
+                <p class="section-description">Each omakase journey
+                    includes:</p>
+                <img src="./assets/fish.png"
+                    alt="Decorative fish illustration" class="fish-decoration">
+
+                <div class="menu-categories-grid">
+                    <div class="category-item">
+                        <img src="./assets/seasonal sushi.jpg">
+                        <h4>10–15 courses of seasonal sushi, sashimi, and
+                            delicacies</h4>
+                    </div>
+                    <div class="category-item">
+                        <img src="./assets/live prep.jpg"
+                            alt="Ramen category">
+                        <h4>Live preparation and storytelling by the chef</h4>
+                    </div>
+                    <div class="category-item">
+                        <img src="./assets/plating.jpg"
+                            alt="Sashimi category">
+                        <h4>All ingredients and plating brought to your
+                            home</h4>
+                    </div>
+                    <!-- <div class="category-item">
+                        <img src="images/category-drinks.jpg"
+                            alt="Drinks category">
+                        <h4>Drinks</h4>
+                    </div> -->
+                </div>
+            </div>
+            <a href="#" class="btn secondary-btn">Available package</a>
+        </div>
+
+        <div class="full-menu-snapshot">
+            <div class="menu-snapshot-item">
+                <!-- <img src="images/menu-snapshot-1.jpg"
+                    alt="Assorted sushi platter"> -->
+                <p>Standard: 10 courses – €120 per person (min 2 guests)</p>
+            </div>
+            <div class="menu-snapshot-item">
+                <!-- <img src="images/menu-snapshot-2.jpg"
+                    alt="Japanese restaurant interior"> -->
+                <p>Premium: 15 courses incl. wagyu & uni – €180 per person</p>
+            </div>
+            <div class="menu-snapshot-item">
+                <!-- <img src="images/menu-snapshot-3.jpg"
+                    alt="Japanese decor and food"> -->
+                <p>Custom: Tell us your preferences, and we’ll create a
+                    personalized menu.</p>
+            </div>
+
+        </section>
+
+        <section class="ambiance-reservation-section">
+            <div class="container ambiance-content">
+                <div class="ambiance-grid">
+                    <div class="ambiance-image-main">
+                        <img src="./assets/cheftable.jpg"
+                            alt="Restaurant interior view">
+                    </div>
+                    <div class="ambiance-image-side">
+                        <img src="./assets/table setting.jpg"
+                            alt="Table setting">
+                        <img src="./assets/sake and drink.jpg"
+                            alt="Sake and dish">
+                        <div class="red-circle-small"></div>
+                    </div>
+                    <div class="ambiance-text">
+                        <h3>We bring the essence of Japan to your dining
+                            table—one course, one story, one unforgettable
+                            evening</h3>
+                        <p>Where Japanese tradition meets modern intimacy an
+                            omakase journey in your own home</p>
+                        <p>心から感謝いたします</p>
+                        <p>From the bottom of our heart, thank you!!</p>
+                        <a href="#reserve-table" class="btn primary-btn">Make
+                            Reservation</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- <section class="testimonials-section">
+            <div class="container testimonials-content">
+                <h2 class="section-title">お客様の声<span>Testimonials</span></h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <img src="images/avatar-1.jpg" alt="Customer Avatar">
+                        <p class="rating">⭐⭐⭐⭐⭐</p>
+                        <p>"Absolutely incredible sushi! Fresh, flavorful, and beautifully presented. A must-visit for any sushi lover."</p>
+                        <h4>- Jane Doe</h4>
+                    </div>
+                    <div class="testimonial-card">
+                        <img src="images/avatar-2.jpg" alt="Customer Avatar">
+                        <p class="rating">⭐⭐⭐⭐⭐</p>
+                        <p>"The ambiance is fantastic, and the service is impeccable. Every dish was a culinary delight."</p>
+                        <h4>- John Smith</h4>
+                    </div>
+                    <div class="testimonial-card">
+                        <img src="images/avatar-3.jpg" alt="Customer Avatar">
+                        <p class="rating">⭐⭐⭐⭐⭐</p>
+                        <p>"Hands down the best Japanese food I've had outside of Japan. Highly recommend the chef's special."</p>
+                        <h4>- Emily White</h4>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <footer id="contact-section" class="main-footer">
+            <div class="container footer-content">
+                <div class="footer-col about-footer">
+                    <div class="logo">
+                        <a href="index.html"><img src="./assets/logo.png"
+                                alt="Ikigai logo Logo"></a>
+                    </div>
+                    <p>Experience authentic Japanese cuisine crafted with
+                        passion and precision.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col quick-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#reserve-table">Reservations</a></li>
+                        <!-- <li><a href="#home-section">Home</a></li> -->
+                        <li><a href="#about-us-section">About Us</a></li>
+                        <li><a href="#menu-section">Menu</a></li>
+                        <li><a href="#home-section">Home</a></li>
+                    </ul>
+                    <!-- <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Menu</a></li>
+                        <li><a href="#">Reservations</a></li>
+                        <li><a href="#">Catering</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul> -->
+                </div>
+                <div class="footer-col contact-info">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Kazincy utca 3,
+                        Budapest, Hungary</p>
+                    <p><i class="fas fa-phone"></i> +3620xxxxxxx</p>
+                    <p><i class="fas fa-envelope"></i> wafu@gmail.com</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sun: 12AM - 9PM</p>
+                </div>
+                <div class="footer-col newsletter">
+                    <h4>Newsletter</h4>
+                    <p>Stay up to date with our latest news and offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <p>&copy; 2025 Wafu Authentic Japanese Restaurant. All
+                        Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+    </body>
+</html>
